@@ -1,0 +1,41 @@
+name: Release
+on:
+  push:
+    branches: [main]
+    paths:
+      - "VERSION"
+env:
+  RELEASE_BRANCH: main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go 1.15
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.15
+
+      - name: Check Out Code
+        uses: actions/checkout@v2
+
+      - name: Download Dependencies
+        run: |-
+          go mod download
+          go mod verify
+
+      - name: Get Version From File
+        id: semver
+        run: echo "::set-output name=version::$(cat ./VERSION)"
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.semver.outputs.version }}
+          name: ${{ steps.semver.outputs.version }}
+          body: Version ${{ steps.semver.outputs.version }}
+          draft: false
+          prerelease: false
+          files: ${{ env.BUILD_FOLDER }}/${{ env.BUILD_FILENAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
