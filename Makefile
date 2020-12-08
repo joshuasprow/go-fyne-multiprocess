@@ -1,12 +1,6 @@
-.PHONY: build_cmd
-build_cmd:
-	cd cmd && \
-		go build -o cmd . && \
-		cd .. && \
-		mv cmd/cmd build
+all: proto build_cmd build_ui run
 
-.PHONY: generate
-generate:
+proto:
 	@echo generating grpc code
 	@protoc \
 		--go_out=. \
@@ -14,3 +8,23 @@ generate:
 		--go-grpc_out=. \
 		--go-grpc_opt=paths=source_relative \
 		./api/api.proto
+
+build_cmd:
+	@echo building cmd
+	@cd cmd && \
+		go build -o cmd . && \
+		cd .. && \
+		mv cmd/cmd build
+
+build_ui:
+	@echo building ui
+	@cd ui && \
+		go build -o ui . && \
+		cd .. && \
+		mv ui/ui build
+
+run:
+	@echo running
+	@./build/cmd & ./build/ui
+
+.PHONY: proto build_cmd build_ui run
