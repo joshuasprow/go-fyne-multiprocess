@@ -73,3 +73,27 @@ func sayHello() (string, error) {
 
 	return r.GetMessage(), nil
 }
+
+func sayGoodbye() (string, error) {
+	c, done, err := newClient()
+	if err != nil {
+		return "", errors.Wrap(err, "newClient")
+	}
+	defer done()
+
+	// Contact the server and print out its response.
+	name := defaultName
+	if len(os.Args) > 1 {
+		name = os.Args[1]
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	r, err := c.SayGoodbye(ctx, &pb.HelloRequest{Name: name})
+	if err != nil {
+		return "", errors.Wrap(err, "c.SayGoodbye")
+	}
+
+	return r.GetMessage(), nil
+}
