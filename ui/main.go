@@ -13,8 +13,6 @@ func main() {
 	a := app.New()
 	w := a.NewWindow("Hello")
 
-	w.SetOnClosed(func() {})
-
 	hello := widget.NewLabel("Hello Fyne!")
 
 	w.SetContent(widget.NewVBox(
@@ -23,6 +21,13 @@ func main() {
 			reply, err := sayHello()
 			if err != nil {
 				log.Fatalf("sayHello: %v", err)
+			}
+			hello.SetText(reply)
+		}),
+		widget.NewButton("Close Server", func() {
+			reply, err := sayGoodbye()
+			if err != nil {
+				log.Fatalf("sayGoodbye: %v", err)
 			}
 			hello.SetText(reply)
 		}),

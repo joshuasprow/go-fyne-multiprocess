@@ -90,7 +90,7 @@ func sayGoodbye() (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := c.SayGoodbye(ctx, &pb.HelloRequest{Name: name})
+	r, err := c.SayGoodbye(ctx, &pb.GoodbyeRequest{Name: name})
 	if err != nil {
 		return "", errors.Wrap(err, "c.SayGoodbye")
 	}
