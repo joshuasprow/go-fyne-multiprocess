@@ -1,4 +1,4 @@
-all: proto build_cmd build_ui run
+all: proto build_cmd build_ui 
 
 proto:
 	@echo generating grpc code
@@ -23,8 +23,4 @@ build_ui:
 		cd .. && \
 		mv ui/ui build
 
-run:
-	@echo running
-	@./build/cmd & ./build/ui
-
-.PHONY: proto build_cmd build_ui run
+.PHONY: proto build_cmd build_ui

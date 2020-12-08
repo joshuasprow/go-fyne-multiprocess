@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/widget"
 )
@@ -10,10 +12,15 @@ func main() {
 	w := a.NewWindow("Hello")
 
 	hello := widget.NewLabel("Hello Fyne!")
+
 	w.SetContent(widget.NewVBox(
 		hello,
 		widget.NewButton("Hi!", func() {
-			hello.SetText("Welcome :)")
+			reply, err := sayHello()
+			if err != nil {
+				log.Fatalf("sayHello: %v", err)
+			}
+			hello.SetText(reply)
 		}),
 	))
 
