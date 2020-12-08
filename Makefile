@@ -1,6 +1,9 @@
 .PHONY: build_cmd
 build_cmd:
-	go build -o cmd cmd/main.go
+	cd cmd && \
+		go build -o cmd . && \
+		cd .. && \
+		mv cmd/cmd build
 
 .PHONY: generate
 generate:
