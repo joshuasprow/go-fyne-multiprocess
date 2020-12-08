@@ -8,8 +8,12 @@ import (
 )
 
 func main() {
+	log.SetPrefix("client: ")
+
 	a := app.New()
 	w := a.NewWindow("Hello")
+
+	w.SetOnClosed(func() {})
 
 	hello := widget.NewLabel("Hello Fyne!")
 

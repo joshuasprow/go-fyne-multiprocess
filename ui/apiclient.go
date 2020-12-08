@@ -34,15 +34,28 @@ const (
 	defaultName = "world"
 )
 
-func sayHello() (string, error) {
+func newClient() (
+	client pb.GreeterClient,
+	done func() error,
+	err error,
+) {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		return "", errors.Wrap(err, "grpc.Dial")
+		return client, func() error { return nil }, errors.Wrap(err, "grpc.Dial")
 	}
-	defer conn.Close()
 
 	c := pb.NewGreeterClient(conn)
+
+	return c, conn.Close, nil
+}
+
+func sayHello() (string, error) {
+	c, done, err := newClient()
+	if err != nil {
+		return "", errors.Wrap(err, "newClient")
+	}
+	defer done()
 
 	// Contact the server and print out its response.
 	name := defaultName

@@ -23,6 +23,8 @@ option go_package = "github.com/joshuasprow/go-fyne-multiprocess/api";
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+  // Tells server to exit
+  rpc SayGoodbye (GoodbyeRequest) returns (GoodbyeReply) {}
 }
 
 // The request message containing the user's name.
@@ -32,5 +34,15 @@ message HelloRequest {
 
 // The response message containing the greetings
 message HelloReply {
+  string message = 1;
+}
+
+// The request message containing the user's name.
+message GoodbyeRequest {
+  string name = 1;
+}
+
+// The response message containing server's response to the exit request
+message GoodbyeReply {
   string message = 1;
 }
