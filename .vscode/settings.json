@@ -1,0 +1,7 @@
+{
+  "files.exclude": {
+    "api": true,
+    "cmd": true,
+    "ui": true
+  }
+}
